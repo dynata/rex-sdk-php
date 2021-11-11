@@ -28,11 +28,13 @@ class Ttl
         return new Ttl(Timestamp::fromDateTime((new \DateTimeImmutable())->add($expiration)));
     }
 
-    public function isExpired(): bool {
+    public function isExpired(): bool
+    {
         return Timestamp::now()->isAfter($this->expiration);
     }
 
-    public function remaining(): \DateInterval {
+    public function remaining(): \DateInterval
+    {
         return $this->expiration->until();
     }
 }

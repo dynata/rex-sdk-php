@@ -8,31 +8,38 @@ class Timestamp
 {
     private \DateTimeInterface $instant;
 
-    private function __construct(\DateTimeInterface $instant) {
+    private function __construct(\DateTimeInterface $instant)
+    {
         $this->instant = $instant;
     }
 
-    public static function fromDateTime(\DateTimeInterface $instant): Timestamp {
-        return new Timestamp($instant);
-    }
-
-    public static function now(): Timestamp {
+    public static function now(): Timestamp
+    {
         return Timestamp::fromDateTime(new \DateTimeImmutable());
     }
 
-    public function until(): \DateInterval {
+    public static function fromDateTime(\DateTimeInterface $instant): Timestamp
+    {
+        return new Timestamp($instant);
+    }
+
+    public function until(): \DateInterval
+    {
         return (new \DateTimeImmutable())->diff($this->instant);
     }
 
-    public function isBefore(Timestamp $timestamp): bool {
+    public function isBefore(Timestamp $timestamp): bool
+    {
         return $this->instant < $timestamp->instant;
     }
 
-    public function isAfter(Timestamp $timestamp): bool {
+    public function isAfter(Timestamp $timestamp): bool
+    {
         return $this->instant > $timestamp->instant;
     }
 
-    public function toRfc3339(): string {
+    public function toRfc3339(): string
+    {
         return $this->instant->format(\DateTimeInterface::RFC3339);
     }
 }

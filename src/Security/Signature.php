@@ -11,7 +11,8 @@ class Signature
     public string $signingString;
     public string $value;
 
-    public function __construct(string $expiration, string $accessKey, string $signingString, string $value) {
+    public function __construct(string $expiration, string $accessKey, string $signingString, string $value)
+    {
         $this->expiration = $expiration;
         $this->accessKey = $accessKey;
         $this->signingString = $signingString;
