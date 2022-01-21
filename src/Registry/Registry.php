@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Dynata\Rex\Registry;
 
 use Dynata\Rex\Registry\Model\AckOpportunitiesInput;
+use Dynata\Rex\Registry\Model\DownloadCollectionInput;
 use Dynata\Rex\Registry\Model\ListOpportunitiesInput;
+use Dynata\Rex\Registry\Model\ListProjectOpportunitiesInput;
 use Dynata\Rex\Registry\Model\Opportunity;
 use Dynata\Rex\RexServiceException;
 use Dynata\Rex\Security\Signer;
@@ -24,48 +26,6 @@ use Symfony\Component\Serializer\Serializer;
 
 class Registry
 {
-    private Client $client;
-    private Serializer $serializer;
-
-    public function __construct(string $baseUrl, Signer $signer)
-    {
-        $stack = HandlerStack::create();
-        $stack->push(function (callable $handler) use ($signer) {
-            return function (RequestInterface $request, array $options) use ($signer, $handler) {
-                $signingString = \hash("sha256", $request->getBody()->getContents());
-                $signature = $signer->sign($signingString);
-
-                $request = $request->withHeader('dynata-signing-string', $signature->signingString)
-                    ->withHeader('dynata-expiration', $signature->expiration)
-                    ->withHeader('dynata-access-key', $signature->accessKey)
-                    ->withHeader('dynata-signature', $signature->value);
-
-                return $handler($request, $options);
-            };
-        });
-
-        $this->client = new Client([
-            'handler' => $stack,
-            'base_uri' => $baseUrl,
-            'timeout' => 30,
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
-        ]);
-
-        $this->serializer = new Serializer([
-            new ObjectNormalizer(
-                null,
-                new CamelCaseToSnakeCaseNameConverter(),
-                null,
-                new PhpDocExtractor(),
-                null,
-                null,
-                [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
-            ),
-            new ArrayDenormalizer(),
-        ], [new JsonEncoder()]);
-    }
 
     /**
      * @param \Dynata\Rex\Registry\Model\ListOpportunitiesInput|null $input
@@ -117,6 +77,71 @@ class Registry
 
         try {
             $this->client->request('POST', '/ack-opportunities', $options);
+        } catch (BadResponseException $e) {
+            $ex = new RexServiceException($e->getMessage(), 0, $e);
+            $ex->statusCode = $e->getResponse()->getStatusCode();
+            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
+
+            throw $ex;
+        }
+    }
+
+    public function getOpportunity(array $options = [])
+    {
+        try {
+            $response = $this->client->request('GET', '/get-opportunity', $options);
+            /** @var Opportunity $opportunity */
+            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            $opportunity = $this->serializer->deserialize(
+            $response->getBody()->getContents(),
+            'Dynata\Rex\Registry\Model\Opportunity',
+            'json'
+            );
+
+            return $opportunity;
+        } catch (BadResponseException $e) {
+            $ex = new RexServiceException($e->getMessage(), 0, $e);
+            $ex->statusCode = $e->getResponse()->getStatusCode();
+            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
+
+            throw $ex;
+        }
+    }
+
+    public function listProjectOpportunities(ListProjectOpportunitiesInput $input, array $options = []) : array {
+        $options = \array_merge($options, [
+            'body' => $this->serializer->serialize($input, 'json'),
+        ]);
+
+        try {
+            $response = $this->client->request('POST', '/list-project-opportunities', $options);
+            /** @var Opportunity[] $opportunities */
+            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            $opportunities = $this->serializer->deserialize(
+            $response->getBody()->getContents(),
+            'Dynata\Rex\Registry\Model\Opportunity[]',
+            'json'
+            );
+
+            return $opportunities;
+        } catch (BadResponseException $e) {
+            $ex = new RexServiceException($e->getMessage(), 0, $e);
+            $ex->statusCode = $e->getResponse()->getStatusCode();
+            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
+
+            throw $ex;
+        }
+    }
+
+    public function downloadCollection(DownloadCollectionInput $input, array $options = []) {
+        $options = \array_merge($options, [
+            'body' => $this->serializer->serialize($input, 'json'),
+        ]);
+
+        try {
+            $response = $this->client->request('POST', '/download-collection', $options);
+
+            return $response;
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();
