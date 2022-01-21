@@ -9,27 +9,35 @@ use Dynata\Rex\Gateway\Model\Context;
 use Dynata\Rex\Gateway\Model\CreateContextInput;
 use Dynata\Rex\Gateway\Model\CreateContextOutput;
 use Dynata\Rex\Gateway\Model\GetContextInput;
-use Dynata\Rex\RequestContext;
+use Dynata\Rex\Gateway\Model\RequestContext;
 use Dynata\Rex\RexServiceException;
 
 class Gateway extends RexBaseService {
-    public function createContext(CreateContextInput $input, ?RequestContext $ctx = null) {
+
+    /**
+     * @param CreateContextInput $input
+     * @param RequestContext|null $ctx
+     * @return CreateContextOutput
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Dynata\Rex\RexServiceException
+     */
+    public function createContext(CreateContextInput $input, ?RequestContext $ctx = null) : CreateContextOutput {
         try {
-            if($ctx != null) {
+            if($ctx !== null) {
                 $input = \array_merge([
                     'ctx' => $ctx
                 ], [
                     'body' => $this->serializer->serialize($input, 'json'),
                 ]);
-                $response = $this->client->request('POST', '/create-context', $input);
-                /** @var CreateContextOutput $out */
-                /** @noinspection PhpUnnecessaryLocalVariableInspection */
-                $out = $this->serializer->deserialize(
-                    $response->getBody()->getContents(),
-                    'Dynata\Rex\Gateway\Model\CreateContextOutput',
-                    'json'
-                );
             }
+            $response = $this->client->request('POST', '/create-context', $input);
+            /** @var CreateContextOutput $out */
+            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            $out = $this->serializer->deserialize(
+                $response->getBody()->getContents(),
+                'Dynata\Rex\Gateway\Model\CreateContextOutput',
+                'json'
+            );
 
             return $out;
         } catch (BadResponseException $e) {
@@ -41,7 +49,13 @@ class Gateway extends RexBaseService {
         }
     }
 
-    public function getContext(GetContextInput $input) {
+    /**
+     * @param GetContextInput $input
+     * @return Context
+     * @throws GuzzleException
+     * @throws RexServiceException
+     */
+    public function getContext(GetContextInput $input) : Context {
 
         try {
             $response = $this->client->request('POST', '/get-context', $input);

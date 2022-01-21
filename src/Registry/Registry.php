@@ -4,35 +4,25 @@ declare(strict_types=1);
 
 namespace Dynata\Rex\Registry;
 
+use Dynata\Rex\Core\RexBaseService;
+use Dynata\Rex\Gateway\Model\Collection;
 use Dynata\Rex\Registry\Model\AckOpportunitiesInput;
 use Dynata\Rex\Registry\Model\DownloadCollectionInput;
 use Dynata\Rex\Registry\Model\ListOpportunitiesInput;
 use Dynata\Rex\Registry\Model\ListProjectOpportunitiesInput;
 use Dynata\Rex\Registry\Model\Opportunity;
 use Dynata\Rex\RexServiceException;
-use Dynata\Rex\Security\Signer;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\HandlerStack;
-use Psr\Http\Message\RequestInterface;
-use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
-class Registry
+class Registry extends RexBaseService
 {
 
     /**
-     * @param \Dynata\Rex\Registry\Model\ListOpportunitiesInput|null $input
+     * @param ListOpportunitiesInput|null $input
      * @param array<string, mixed> $options
      * @return Opportunity[]
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Dynata\Rex\RexServiceException
+     * @throws GuzzleException
+     * @throws RexServiceException
      */
     public function listOpportunities(?ListOpportunitiesInput $input = null, array $options = []): array
     {
@@ -64,10 +54,10 @@ class Registry
     }
 
     /**
-     * @param \Dynata\Rex\Registry\Model\AckOpportunitiesInput $input
+     * @param AckOpportunitiesInput $input
      * @param array<string, mixed> $options
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Dynata\Rex\RexServiceException
+     * @throws GuzzleException
+     * @throws RexServiceException
      */
     public function ackOpportunities(AckOpportunitiesInput $input, array $options = []): void
     {
@@ -86,7 +76,13 @@ class Registry
         }
     }
 
-    public function getOpportunity(array $options = [])
+    /**
+     * @param array<string, mixed> $options
+     * @return Opportunity
+     * @throws GuzzleException
+     * @throws RexServiceException
+     */
+    public function getOpportunity(array $options = []) : Opportunity
     {
         try {
             $response = $this->client->request('GET', '/get-opportunity', $options);
@@ -108,6 +104,13 @@ class Registry
         }
     }
 
+    /**
+     * @param ListProjectOpportunitiesInput $input
+     * @param array<string, mixed> $options
+     * @return Opportunity[]
+     * @throws GuzzleException
+     * @throws RexServiceException
+     */
     public function listProjectOpportunities(ListProjectOpportunitiesInput $input, array $options = []) : array {
         $options = \array_merge($options, [
             'body' => $this->serializer->serialize($input, 'json'),
@@ -133,15 +136,29 @@ class Registry
         }
     }
 
-    public function downloadCollection(DownloadCollectionInput $input, array $options = []) {
+    /**
+     * @param DownloadCollectionInput $input
+     * @param array<string, mixed> $options
+     * @return Collection
+     * @throws GuzzleException
+     * @throws RexServiceException
+     */
+    public function downloadCollection(DownloadCollectionInput $input, array $options = []) : Collection {
         $options = \array_merge($options, [
             'body' => $this->serializer->serialize($input, 'json'),
         ]);
 
         try {
             $response = $this->client->request('POST', '/download-collection', $options);
+            /** @var Opportunity[] $opportunities */
+            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            $collection = $this->serializer->deserialize(
+                $response->getBody()->getContents(),
+                'Dynata\Rex\Registry\Model\Collection',
+                'json'
+            );
 
-            return $response;
+            return $collection;
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();

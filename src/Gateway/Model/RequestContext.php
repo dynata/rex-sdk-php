@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Dynata\Rex;
+namespace Dynata\Rex\Gateway\Model;
 
 
 use Dynata\Rex\Security\Ttl;
