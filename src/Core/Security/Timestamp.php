@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dynata\Rex\Security;
+namespace Dynata\Rex\Core\Security;
 
 class Timestamp
 {
