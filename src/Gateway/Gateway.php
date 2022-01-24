@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Dynata\Rex\Gateway;
 
-
 use Dynata\Rex\Core\RexBaseService;
 use Dynata\Rex\Gateway\Model\Context;
 use Dynata\Rex\Gateway\Model\CreateContextInput;
@@ -13,8 +12,8 @@ use Dynata\Rex\Gateway\Model\GetContextInput;
 use Dynata\Rex\Gateway\Model\RequestContext;
 use Dynata\Rex\RexServiceException;
 
-class Gateway extends RexBaseService {
-
+class Gateway extends RexBaseService
+{
     /**
      * @param CreateContextInput $input
      * @param RequestContext|null $ctx
@@ -22,9 +21,11 @@ class Gateway extends RexBaseService {
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Dynata\Rex\RexServiceException
      */
-    public function createContext(CreateContextInput $input, ?RequestContext $ctx = null) : CreateContextOutput {
+
+    public function createContext(CreateContextInput $input, ?RequestContext $ctx = null): CreateContextOutput
+    {
         try {
-            if($ctx !== null) {
+            if ($ctx !== null) {
                 $input = \array_merge([
                     'ctx' => $ctx
                 ], [
@@ -56,8 +57,8 @@ class Gateway extends RexBaseService {
      * @throws GuzzleException
      * @throws RexServiceException
      */
-    public function getContext(GetContextInput $input) : Context {
-
+    public function getContext(GetContextInput $input): Context
+    {
         try {
             $response = $this->client->request('POST', '/get-context', $input);
 

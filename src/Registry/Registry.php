@@ -16,7 +16,6 @@ use GuzzleHttp\Exception\BadResponseException;
 
 class Registry extends RexBaseService
 {
-
     /**
      * @param ListOpportunitiesInput|null $input
      * @param array<string, mixed> $options
@@ -82,16 +81,16 @@ class Registry extends RexBaseService
      * @throws GuzzleException
      * @throws RexServiceException
      */
-    public function getOpportunity(array $options = []) : Opportunity
+    public function getOpportunity(array $options = []): Opportunity
     {
         try {
             $response = $this->client->request('GET', '/get-opportunity', $options);
             /** @var Opportunity $opportunity */
             /** @noinspection PhpUnnecessaryLocalVariableInspection */
             $opportunity = $this->serializer->deserialize(
-            $response->getBody()->getContents(),
-            'Dynata\Rex\Registry\Model\Opportunity',
-            'json'
+                $response->getBody()->getContents(),
+                'Dynata\Rex\Registry\Model\Opportunity',
+                'json'
             );
 
             return $opportunity;
@@ -111,7 +110,8 @@ class Registry extends RexBaseService
      * @throws GuzzleException
      * @throws RexServiceException
      */
-    public function listProjectOpportunities(ListProjectOpportunitiesInput $input, array $options = []) : array {
+    public function listProjectOpportunities(ListProjectOpportunitiesInput $input, array $options = []): array
+    {
         $options = \array_merge($options, [
             'body' => $this->serializer->serialize($input, 'json'),
         ]);
@@ -121,9 +121,9 @@ class Registry extends RexBaseService
             /** @var Opportunity[] $opportunities */
             /** @noinspection PhpUnnecessaryLocalVariableInspection */
             $opportunities = $this->serializer->deserialize(
-            $response->getBody()->getContents(),
-            'Dynata\Rex\Registry\Model\Opportunity[]',
-            'json'
+                $response->getBody()->getContents(),
+                'Dynata\Rex\Registry\Model\Opportunity[]',
+                'json'
             );
 
             return $opportunities;
@@ -143,7 +143,8 @@ class Registry extends RexBaseService
      * @throws GuzzleException
      * @throws RexServiceException
      */
-    public function downloadCollection(DownloadCollectionInput $input, array $options = []) : Collection {
+    public function downloadCollection(DownloadCollectionInput $input, array $options = []): Collection
+    {
         $options = \array_merge($options, [
             'body' => $this->serializer->serialize($input, 'json'),
         ]);

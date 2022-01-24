@@ -1,14 +1,13 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Dynata\Rex\Gateway\Model;
 
-
 use Dynata\Rex\Security\Ttl;
 
-class RequestContext {
+class RequestContext
+{
     public ?int $socketTimeout;
     public ?int $connectTimeout;
     public ?int $connectionRequestTimeout;
@@ -21,10 +20,11 @@ class RequestContext {
    * @param int|null $connectionRequestTimeout
    * @param Ttl|null $ttl
    */
-  public function __construct(?int $socketTimeout, ?int $connectTimeout, ?int $connectionRequestTimeout, ?Ttl $ttl) {
-    $this->socketTimeout = $socketTimeout;
-    $this->connectTimeout = $connectTimeout;
-    $this->connectionRequestTimeout = $connectionRequestTimeout;
-    $this->ttl = $ttl;
-  }
+    public function __construct(?int $socketTimeout, ?int $connectTimeout, ?int $connectionRequestTimeout, ?Ttl $ttl)
+    {
+        $this->socketTimeout = $socketTimeout;
+        $this->connectTimeout = $connectTimeout;
+        $this->connectionRequestTimeout = $connectionRequestTimeout;
+        $this->ttl = $ttl;
+    }
 }
