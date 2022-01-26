@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Dynata\Rex\Gateway;
 
 use Dynata\Rex\Core\RexBaseService;
+use Dynata\Rex\Core\RexServiceException;
 use Dynata\Rex\Gateway\Model\Context;
 use Dynata\Rex\Gateway\Model\CreateContextInput;
 use Dynata\Rex\Gateway\Model\CreateContextOutput;
+use Dynata\Rex\Gateway\Model\ExpireContextInput;
 use Dynata\Rex\Gateway\Model\GetContextInput;
 use Dynata\Rex\Gateway\Model\RequestContext;
-use Dynata\Rex\RexServiceException;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Gateway extends RexBaseService
 {
@@ -18,8 +21,8 @@ class Gateway extends RexBaseService
      * @param CreateContextInput $input
      * @param RequestContext|null $ctx
      * @return CreateContextOutput
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Dynata\Rex\RexServiceException
+     * @throws GuzzleException
+     * @throws RexServiceException
      */
 
     public function createContext(CreateContextInput $input, ?RequestContext $ctx = null): CreateContextOutput
@@ -59,8 +62,11 @@ class Gateway extends RexBaseService
      */
     public function getContext(GetContextInput $input): Context
     {
+        $options = [
+            'body' => $this->serializer->serialize($input, 'json'),
+        ];
         try {
-            $response = $this->client->request('POST', '/get-context', $input);
+            $response = $this->client->request('POST', '/get-context', $options);
 
             /** @var Context $context */
             /** @noinspection PhpUnnecessaryLocalVariableInspection */
@@ -71,6 +77,71 @@ class Gateway extends RexBaseService
             );
 
             return $context;
+        } catch (BadResponseException $e) {
+            $ex = new RexServiceException($e->getMessage(), 0, $e);
+            $ex->statusCode = $e->getResponse()->getStatusCode();
+            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
+
+            throw $ex;
+        }
+    }
+
+    /**
+     * @param ExpireContextInput $input
+     * @throws GuzzleException
+     * @throws RexServiceException
+     */
+    public function expireContext(ExpireContextInput $input): void
+    {
+        $options = [
+            'body' => $this->serializer->serialize($input, 'json'),
+        ];
+        try {
+            $this->client->request('POST', '/expire-context', $options);
+        } catch (BadResponseException $e) {
+            $ex = new RexServiceException($e->getMessage(), 0, $e);
+            $ex->statusCode = $e->getResponse()->getStatusCode();
+            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
+
+            throw $ex;
+        }
+    }
+
+    /**
+     * @param PutRespondentInput $input
+     * @param array<string, mixed> $options
+     * @throws GuzzleException
+     * @throws RexServiceException
+     */
+    public function putRespondent(PutRespondentInput $input, array $options = []): void
+    {
+        $options = \array_merge($options, [
+            'body' => $this->serializer->serialize($input, 'json'),
+        ]);
+        try {
+            $this->client->request('POST', '/put-respondent', $options);
+        } catch (BadResponseException $e) {
+            $ex = new RexServiceException($e->getMessage(), 0, $e);
+            $ex->statusCode = $e->getResponse()->getStatusCode();
+            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
+
+            throw $ex;
+        }
+    }
+
+    /**
+     * @param PutRespondentAnswersInput $input
+     * @param array<string, mixed> $options
+     * @throws GuzzleException
+     * @throws RexServiceException
+     */
+    public function putRespondentAnswers(PutRespondentAnswersInput $input, array $options = []): void
+    {
+        $options = \array_merge($options, [
+            'body' => $this->serializer->serialize($input, 'json'),
+        ]);
+        try {
+            $this->client->request('POST', '/put-respondent-answers', $options);
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();

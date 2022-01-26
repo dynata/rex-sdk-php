@@ -18,7 +18,7 @@ class StringSigner implements Signer
     /**
      * @param string $subject
      * @param \DateInterval|null $ttl
-     * @return \Dynata\Rex\Security\Signature
+     * @return Signature
      */
     public function sign($subject, \DateInterval $ttl = null): Signature
     {
