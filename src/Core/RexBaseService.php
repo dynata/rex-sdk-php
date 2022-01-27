@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dynata\Rex\Core;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
@@ -15,6 +14,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Dynata\Rex\Core\Security\Signer;
 
 class RexBaseService
 {
