@@ -142,11 +142,11 @@ class Registry extends RexBaseService
     /**
      * @param DownloadCollectionInput $input
      * @param array<string, mixed> $options
-     * @return Collection
+     * @return StreamInterface
      * @throws GuzzleException
      * @throws RexServiceException
      */
-    public function downloadCollection(DownloadCollectionInput $input, array $options = []): Collection
+    public function downloadCollection(DownloadCollectionInput $input, array $options = []): StreamInterface
     {
         $options = \array_merge($options, [
             'body' => $this->serializer->serialize($input, 'json'),
@@ -154,15 +154,7 @@ class Registry extends RexBaseService
 
         try {
             $response = $this->client->request('POST', '/download-collection', $options);
-            /** @var Opportunity[] $opportunities */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
-            $collection = $this->serializer->deserialize(
-                $response->getBody()->getContents(),
-                'Dynata\Rex\Registry\Model\Collection',
-                'json'
-            );
-
-            return $collection;
+            return $response->getBody();
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();
