@@ -11,4 +11,14 @@ class AckOpportunitiesInput
      * @var int[]
      */
     public array $opportunityIds;
+
+    /**
+     * @param string|null $account
+     * @param int[] $opportunityIds
+     */
+    public function __construct(?string $account, array $opportunityIds)
+    {
+        $this->account = $account;
+        $this->opportunityIds = $opportunityIds;
+    }
 }

@@ -18,6 +18,7 @@ class CellDiscriminator implements ClassDiscriminatorResolverInterface
             Cell::KIND_LIST => ListCell::class,
             Cell::KIND_RANGE => RangeCell::class,
             Cell::KIND_COLLECTION => CollectionCell::class,
+            Cell::KIND_INEFFABLE => IneffableCell::class
         ]);
     }
 

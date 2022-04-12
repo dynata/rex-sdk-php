@@ -7,4 +7,5 @@ namespace Dynata\Rex\Registry\Model;
 class CollectionCell
 {
     public string $collection;
+    public string $operator;
 }

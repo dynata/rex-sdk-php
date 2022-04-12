@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dynata\Rex\Gateway;
+namespace Dynata\Rex\Gateway\Model;
 
 class PutRespondentInput
 {
