@@ -2,11 +2,10 @@
 
 Package for building and interacting with the Dynata Respondent Exchange (REX)
 
-&nbsp;
 
 ## Quickstart:
 
-&nbsp;
+
 
 ### *__Respondent Gateway__*
 ### Instantiate a Gateway Client

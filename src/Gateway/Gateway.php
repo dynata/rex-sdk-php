@@ -6,6 +6,8 @@ namespace Dynata\Rex\Gateway;
 
 use Dynata\Rex\Core\RexBaseService;
 use Dynata\Rex\Core\RexServiceException;
+use Dynata\Rex\Gateway\Model\Attribute;
+use Dynata\Rex\Gateway\Model\AttributeInfo;
 use Dynata\Rex\Gateway\Model\Context;
 use Dynata\Rex\Gateway\Model\CreateContextInput;
 use Dynata\Rex\Gateway\Model\CreateContextOutput;
@@ -162,7 +164,7 @@ class Gateway extends RexBaseService
         ];
         try {
             $response = $this->client->request('POST', '/get-attributes', $options);
-            /** @var Context $context */
+            /** @var Attribute[] $attributes */
             /** @noinspection PhpUnnecessaryLocalVariableInspection */
             $attributes = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
@@ -185,14 +187,14 @@ class Gateway extends RexBaseService
         ];
         try {
             $response = $this->client->request('POST', '/get-attribute-info', $options);
-            /** @var Context $context */
+            /** @var AttributeInfo $attributeInfo */
             /** @noinspection PhpUnnecessaryLocalVariableInspection */
-            $attributes = $this->serializer->deserialize(
+            $attributeInfo = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Gateway\Model\AttributeInfo',
                 'json'
             );
-            return $attributes;
+            return $attributeInfo;
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();
