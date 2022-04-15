@@ -13,13 +13,16 @@ class CellDiscriminator implements ClassDiscriminatorResolverInterface
 
     public function __construct()
     {
-        $this->cellMapping = new ClassDiscriminatorMapping('kind', [
+        $this->cellMapping = new ClassDiscriminatorMapping(
+            'kind',
+            [
             Cell::KIND_VALUE => ValueCell::class,
             Cell::KIND_LIST => ListCell::class,
             Cell::KIND_RANGE => RangeCell::class,
             Cell::KIND_COLLECTION => CollectionCell::class,
             Cell::KIND_INEFFABLE => IneffableCell::class
-        ]);
+            ]
+        );
     }
 
     public function getMappingForClass(string $class): ?ClassDiscriminatorMapping

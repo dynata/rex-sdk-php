@@ -2,7 +2,6 @@
 
 namespace Dynata\Rex\Gateway\Model;
 
-
 class Attribute
 {
     public bool $active;

@@ -76,6 +76,18 @@ $respondent = new PutRespondentAnwsersInput(
 $gatway->putRespondentAnswers($respondent);
 ```
 
+##### Get Attributes
+```
+$get_attributes = new GetAttributeInput();
+$get_attributes->page_size = 1;
+$gateway->getAttributes($get_attributes);
+```
+
+##### Get Attribute Info
+```
+$get_attribute_info = new GetAttributeInfoInput(1);
+$gateway->getAttributeInfo($get_attribute_info);
+```
 ### *__Opportunity Registry__*
 ### Instantiate a Registry Client
 

@@ -14,7 +14,7 @@ class AckOpportunitiesInput
 
     /**
      * @param string|null $account
-     * @param int[] $opportunityIds
+     * @param int[]       $opportunityIds
      */
     public function __construct(?string $account, array $opportunityIds)
     {

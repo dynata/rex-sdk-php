@@ -16,8 +16,8 @@ class StringSigner implements Signer
     }
 
     /**
-     * @param string $subject
-     * @param \DateInterval|null $ttl
+     * @param  string             $subject
+     * @param  \DateInterval|null $ttl
      * @return Signature
      */
     public function sign($subject, \DateInterval $ttl = null): Signature

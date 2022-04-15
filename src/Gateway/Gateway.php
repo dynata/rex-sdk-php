@@ -12,6 +12,7 @@ use Dynata\Rex\Gateway\Model\Context;
 use Dynata\Rex\Gateway\Model\CreateContextInput;
 use Dynata\Rex\Gateway\Model\CreateContextOutput;
 use Dynata\Rex\Gateway\Model\ExpireContextInput;
+use Dynata\Rex\Gateway\Model\GetAttributeInfoInput;
 use Dynata\Rex\Gateway\Model\GetAttributeInput;
 use Dynata\Rex\Gateway\Model\GetContextInput;
 use Dynata\Rex\Gateway\Model\PutRespondentAnswersInput;
@@ -23,8 +24,8 @@ use GuzzleHttp\Exception\GuzzleException;
 class Gateway extends RexBaseService
 {
     /**
-     * @param CreateContextInput $input
-     * @param RequestContext|null $ctx
+     * @param  CreateContextInput  $input
+     * @param  RequestContext|null $ctx
      * @return CreateContextOutput
      * @throws GuzzleException
      * @throws RexServiceException
@@ -34,17 +35,24 @@ class Gateway extends RexBaseService
     {
         try {
             if ($ctx !== null) {
-                $input = \array_merge([
+                $input = \array_merge(
+                    [
                     'ctx' => $ctx
-                ], [
+                    ],
+                    [
                     'body' => $this->serializer->serialize($input, 'json'),
-                ]);
+                    ]
+                );
             } else {
                 $input = ['body' => $this->serializer->serialize($input, 'json')];
             }
-            $response = $this->client->request('POST', '/create-context',  $input);
-            /** @var CreateContextOutput $out */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            $response = $this->client->request('POST', '/create-context', $input);
+            /**
+ * @var CreateContextOutput $out
+*/
+            /**
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+*/
             $out = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Gateway\Model\CreateContextOutput',
@@ -62,7 +70,7 @@ class Gateway extends RexBaseService
     }
 
     /**
-     * @param GetContextInput $input
+     * @param  GetContextInput $input
      * @return Context
      * @throws GuzzleException
      * @throws RexServiceException
@@ -75,8 +83,12 @@ class Gateway extends RexBaseService
         try {
             $response = $this->client->request('POST', '/get-context', $options);
 
-            /** @var Context $context */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            /**
+ * @var Context $context
+*/
+            /**
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+*/
             $context = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Gateway\Model\Context',
@@ -94,7 +106,7 @@ class Gateway extends RexBaseService
     }
 
     /**
-     * @param ExpireContextInput $input
+     * @param  ExpireContextInput $input
      * @throws GuzzleException
      * @throws RexServiceException
      */
@@ -115,16 +127,19 @@ class Gateway extends RexBaseService
     }
 
     /**
-     * @param PutRespondentInput $input
-     * @param array<string, mixed> $options
+     * @param  PutRespondentInput   $input
+     * @param  array<string, mixed> $options
      * @throws GuzzleException
      * @throws RexServiceException
      */
     public function putRespondent(PutRespondentInput $input, array $options = []): void
     {
-        $options = \array_merge($options, [
+        $options = \array_merge(
+            $options,
+            [
             'body' => $this->serializer->serialize($input, 'json'),
-        ]);
+            ]
+        );
         try {
             $this->client->request('POST', '/put-respondent', $options);
         } catch (BadResponseException $e) {
@@ -137,16 +152,19 @@ class Gateway extends RexBaseService
     }
 
     /**
-     * @param PutRespondentAnswersInput $input
-     * @param array<string, mixed> $options
+     * @param  PutRespondentAnswersInput $input
+     * @param  array<string, mixed>      $options
      * @throws GuzzleException
      * @throws RexServiceException
      */
     public function putRespondentAnswers(PutRespondentAnswersInput $input, array $options = []): void
     {
-        $options = \array_merge($options, [
+        $options = \array_merge(
+            $options,
+            [
             'body' => $this->serializer->serialize($input, 'json'),
-        ]);
+            ]
+        );
         try {
             $this->client->request('POST', '/put-respondent-answers', $options);
         } catch (BadResponseException $e) {
@@ -158,14 +176,19 @@ class Gateway extends RexBaseService
         }
     }
 
-    public function getAttributes(GetAttributeInput $input) {
+    public function getAttributes(GetAttributeInput $input)
+    {
         $options = [
             'body' => $this->serializer->serialize($input, 'json'),
         ];
         try {
             $response = $this->client->request('POST', '/get-attributes', $options);
-            /** @var Attribute[] $attributes */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            /**
+ * @var Attribute[] $attributes
+*/
+            /**
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+*/
             $attributes = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Gateway\Model\Attribute[]',
@@ -181,14 +204,19 @@ class Gateway extends RexBaseService
         }
     }
 
-    public function getAttributeInfo(GetAttributeInput $input) {
+    public function getAttributeInfo(GetAttributeInfoInput $input)
+    {
         $options = [
             'body' => $this->serializer->serialize($input, 'json'),
         ];
         try {
             $response = $this->client->request('POST', '/get-attribute-info', $options);
-            /** @var AttributeInfo $attributeInfo */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            /**
+ * @var AttributeInfo $attributeInfo
+*/
+            /**
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+*/
             $attributeInfo = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Gateway\Model\AttributeInfo',

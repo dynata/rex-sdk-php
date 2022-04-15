@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Dynata\Rex\Registry;
 
 use Dynata\Rex\Core\RexBaseService;
-use Dynata\Rex\Gateway\Model\Collection;
 use Dynata\Rex\Registry\Model\AckOpportunitiesInput;
 use Dynata\Rex\Registry\Model\DownloadCollectionInput;
 use Dynata\Rex\Registry\Model\GetAttributeQuestionsInput;
@@ -20,8 +19,8 @@ use Psr\Http\Message\StreamInterface;
 class Registry extends RexBaseService
 {
     /**
-     * @param ListOpportunitiesInput|null $input
-     * @param array<string, mixed> $options
+     * @param  ListOpportunitiesInput|null $input
+     * @param  array<string, mixed>        $options
      * @return Opportunity[]
      * @throws GuzzleException
      * @throws RexServiceException
@@ -29,16 +28,23 @@ class Registry extends RexBaseService
     public function listOpportunities(?ListOpportunitiesInput $input = null, array $options = []): array
     {
         if ($input !== null) {
-            $options = \array_merge($options, [
+            $options = \array_merge(
+                $options,
+                [
                 'json' => $input,
-            ]);
+                ]
+            );
         }
 
         try {
             $response = $this->client->request('POST', '/list-opportunities', $options);
 
-            /** @var Opportunity[] $opportunities */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            /**
+ * @var Opportunity[] $opportunities
+*/
+            /**
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+*/
             $opportunities = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Registry\Model\Opportunity[]',
@@ -56,16 +62,19 @@ class Registry extends RexBaseService
     }
 
     /**
-     * @param AckOpportunitiesInput $input
-     * @param array<string, mixed> $options
+     * @param  AckOpportunitiesInput $input
+     * @param  array<string, mixed>  $options
      * @throws GuzzleException
      * @throws RexServiceException
      */
     public function ackOpportunities(AckOpportunitiesInput $input, array $options = []): void
     {
-        $options = \array_merge($options, [
+        $options = \array_merge(
+            $options,
+            [
             'body' => $this->serializer->serialize($input, 'json'),
-        ]);
+            ]
+        );
 
         try {
             $this->client->request('POST', '/ack-opportunities', $options);
@@ -79,7 +88,7 @@ class Registry extends RexBaseService
     }
 
     /**
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed> $options
      * @return Opportunity
      * @throws GuzzleException
      * @throws RexServiceException
@@ -88,8 +97,12 @@ class Registry extends RexBaseService
     {
         try {
             $response = $this->client->request('GET', '/get-opportunity', $options);
-            /** @var Opportunity $opportunity */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            /**
+ * @var Opportunity $opportunity
+*/
+            /**
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+*/
             $opportunity = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Registry\Model\Opportunity',
@@ -107,22 +120,29 @@ class Registry extends RexBaseService
     }
 
     /**
-     * @param ListProjectOpportunitiesInput $input
-     * @param array<string, mixed> $options
+     * @param  ListProjectOpportunitiesInput $input
+     * @param  array<string, mixed>          $options
      * @return Opportunity[]
      * @throws GuzzleException
      * @throws RexServiceException
      */
     public function listProjectOpportunities(ListProjectOpportunitiesInput $input, array $options = []): array
     {
-        $options = \array_merge($options, [
+        $options = \array_merge(
+            $options,
+            [
             'body' => $this->serializer->serialize($input, 'json'),
-        ]);
+            ]
+        );
 
         try {
             $response = $this->client->request('POST', '/list-project-opportunities', $options);
-            /** @var Opportunity[] $opportunities */
-            /** @noinspection PhpUnnecessaryLocalVariableInspection */
+            /**
+ * @var Opportunity[] $opportunities
+*/
+            /**
+ * @noinspection PhpUnnecessaryLocalVariableInspection
+*/
             $opportunities = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Registry\Model\Opportunity[]',
@@ -140,17 +160,20 @@ class Registry extends RexBaseService
     }
 
     /**
-     * @param DownloadCollectionInput $input
-     * @param array<string, mixed> $options
+     * @param  DownloadCollectionInput $input
+     * @param  array<string, mixed>    $options
      * @return StreamInterface
      * @throws GuzzleException
      * @throws RexServiceException
      */
     public function downloadCollection(DownloadCollectionInput $input, array $options = []): StreamInterface
     {
-        $options = \array_merge($options, [
+        $options = \array_merge(
+            $options,
+            [
             'body' => $this->serializer->serialize($input, 'json'),
-        ]);
+            ]
+        );
 
         try {
             $response = $this->client->request('POST', '/download-collection', $options);
@@ -165,17 +188,20 @@ class Registry extends RexBaseService
     }
 
     /**
-     * @param GetAttributeQuestionsInput $input
-     * @param array<string, mixed> $options
+     * @param  GetAttributeQuestionsInput $input
+     * @param  array<string, mixed>       $options
      * @return StreamInterface
      * @throws GuzzleException
      * @throws RexServiceException
      */
     public function getAttributeQuestions(GetAttributeQuestionsInput $input, array $options = []): StreamInterface
     {
-        $options = \array_merge($options, [
+        $options = \array_merge(
+            $options,
+            [
             'body' => $this->serializer->serialize($input, 'json'),
-        ]);
+            ]
+        );
 
         try {
             $response = $this->client->request('POST', '/get-attribute-questions', $options);
@@ -190,17 +216,20 @@ class Registry extends RexBaseService
     }
 
     /**
-     * @param GetAttributeAnswersInput $input
-     * @param array<string, mixed> $options
+     * @param  GetAttributeAnswersInput $input
+     * @param  array<string, mixed>     $options
      * @return StreamInterface
      * @throws GuzzleException
      * @throws RexServiceException
      */
     public function getAttributeAnswers(GetAttributeAnswersInput $input, array $options = []): StreamInterface
     {
-        $options = \array_merge($options, [
+        $options = \array_merge(
+            $options,
+            [
             'body' => $this->serializer->serialize($input, 'json'),
-        ]);
+            ]
+        );
 
         try {
             $response = $this->client->request('POST', '/get-attribute-answers', $options);
