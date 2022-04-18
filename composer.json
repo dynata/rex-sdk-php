@@ -3,8 +3,8 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Dynata\\Rex\\": "src/",
-            "Dynata\\Rex\\Gateway\\": "src/Gateway"
+            "Dynata\\Rex\\": "app/",
+            "Dynata\\Rex\\Gateway\\": "app/Gateway"
         }
     },
     "require": {
