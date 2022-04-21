@@ -21,7 +21,7 @@ class RexBaseService
     protected Client $client;
     protected Serializer $serializer;
 
-    public function __construct(string $baseUrl, Signer $signer)
+    public function __construct(string $baseUrl, Signer $signer, Client $client = null)
     {
         $stack = HandlerStack::create();
         $stack->push(
@@ -42,27 +42,31 @@ class RexBaseService
 
         $this->client = new Client(
             [
-            'handler' => $stack,
-            'base_uri' => $baseUrl,
-            'timeout' => 30,
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
+                'handler' => $stack,
+                'base_uri' => $baseUrl,
+                'timeout' => 30,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
             ]
         );
 
+        if ($client !== null) {
+            $this->client = $client;
+        }
+
         $this->serializer = new Serializer(
             [
-            new ObjectNormalizer(
-                null,
-                new CamelCaseToSnakeCaseNameConverter(),
-                null,
-                new PhpDocExtractor(),
-                null,
-                null,
-                [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
-            ),
-            new ArrayDenormalizer(),
+                new ObjectNormalizer(
+                    null,
+                    new CamelCaseToSnakeCaseNameConverter(),
+                    null,
+                    new PhpDocExtractor(),
+                    null,
+                    null,
+                    [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
+                ),
+                new ArrayDenormalizer(),
             ],
             [new JsonEncoder()]
         );
