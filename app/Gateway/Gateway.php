@@ -120,16 +120,14 @@ class Gateway extends RexBaseService
      * @throws GuzzleException
      * @throws RexServiceException
      */
-    public function putRespondent(PutRespondentInput $input, array $options = []): void
+    public function putRespondent(PutRespondentInput $input, array $options = []): Response
     {
         $options = \array_merge(
             $options,
-            [
-            'body' => $this->serializer->serialize($input, 'json'),
-            ]
+            ['body' => $this->serializer->serialize($input, 'json'),]
         );
         try {
-            $this->client->request('POST', '/put-respondent', $options);
+            return $this->client->request('POST', '/put-respondent', $options);
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();
@@ -145,7 +143,7 @@ class Gateway extends RexBaseService
      * @throws GuzzleException
      * @throws RexServiceException
      */
-    public function putRespondentAnswers(PutRespondentAnswersInput $input, array $options = []): void
+    public function putRespondentAnswers(PutRespondentAnswersInput $input, array $options = []): Response
     {
         $options = \array_merge(
             $options,
@@ -154,7 +152,7 @@ class Gateway extends RexBaseService
             ]
         );
         try {
-            $this->client->request('POST', '/put-respondent-answers', $options);
+            return $this->client->request('POST', '/put-respondent-answers', $options);
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();
