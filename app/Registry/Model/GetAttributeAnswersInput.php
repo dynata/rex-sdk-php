@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dynata\Rex\Registry;
+namespace Dynata\Rex\Registry\Model;
 
 class GetAttributeAnswersInput
 {

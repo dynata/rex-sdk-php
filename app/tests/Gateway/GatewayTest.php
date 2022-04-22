@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use App\Tests\TestCase;
-use Dynata\Rex\Core\RexServiceException;
 use Dynata\Rex\Core\Security\BasicCredentialsProvider;
 use Dynata\Rex\Core\Security\StringSigner;
 use Dynata\Rex\Gateway\Gateway;
