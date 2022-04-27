@@ -64,14 +64,14 @@ $gatway->putRespondent($respondent);
 $respondent = new PutRespondentAnwsersInput(
     "unique_respondent_id",
     "US",
-    "attributes" => [
     [
-      "id" => -9223372036854776000,
-      "answers" => [
-        -9223372036854776000
-      ]
+         [
+            "id" => -9223372036854776000,
+            "answers" => [
+                -9223372036854776000
+            ]
+        ]
     ]
-  ]
 );
 $gatway->putRespondentAnswers($respondent);
 ```
