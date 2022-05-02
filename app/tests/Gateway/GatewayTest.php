@@ -39,7 +39,6 @@ class GatewayTest extends TestCase
         );
         $response = $gateway->createContext($context);
         $this->assertInstanceOf(CreateContextOutput::class, $response);
-
     }
 
     public function testCanCreateContextException(): void
@@ -57,7 +56,6 @@ class GatewayTest extends TestCase
             $gateway->createContext($context);
         } catch (Exception $e) {
             $this->assertEquals('Error Communicating with Server', $e->getMessage());
-
         }
     }
 
@@ -145,7 +143,7 @@ class GatewayTest extends TestCase
     {
         $gateway = $this->createGateway();
         $this->buildResponse();
-        $respondent = new PutRespondentAnswersInput('1', 'us', ['ctx' => '1'] );
+        $respondent = new PutRespondentAnswersInput('1', 'us', ['ctx' => '1']);
         $request = $gateway->putRespondentAnswers($respondent);
         $this->assertEquals(200, $request->getStatusCode());
     }
@@ -154,7 +152,7 @@ class GatewayTest extends TestCase
     {
         $gateway = $this->createGateway();
         $this->buildResponse([], 500, 'post', '/put-respondent-answers');
-        $respondent = new PutRespondentAnswersInput('1', 'us', ['ctx' => '1'] );
+        $respondent = new PutRespondentAnswersInput('1', 'us', ['ctx' => '1']);
         try {
             $gateway->putRespondentAnswers($respondent);
         } catch (Exception $e) {

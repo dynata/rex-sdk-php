@@ -51,7 +51,9 @@ abstract class TestCase extends BaseTestCase
 
     final protected function buildResponse(array $data = null, int $status = 200, $method = null, $uri = ''): void
     {
-        $parsedResponse = new Psr7\Response($status, ['Content-Type' => 'application/json',
+        $parsedResponse = new Psr7\Response(
+            $status,
+            ['Content-Type' => 'application/json',
             'dynata-expiration' => '',
             'dynata-access-key' => 'ABCD1234',
             'dynata-signature' => 'c156e91013eb715edb2b07df5491497a807206b1796bb7d031505107a9dbdcdf'],
@@ -59,9 +61,12 @@ abstract class TestCase extends BaseTestCase
         );
         if ($status !== 200) {
             $this->mockHandler->append(
-                new BadResponseException('Error Communicating with Server', new Psr7\Request($method, $uri),
+                new BadResponseException(
+                    'Error Communicating with Server',
+                    new Psr7\Request($method, $uri),
                     $parsedResponse
-                ));
+                )
+            );
         }
         $this->mockHandler->append($parsedResponse);
     }

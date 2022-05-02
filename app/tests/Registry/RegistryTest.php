@@ -89,7 +89,7 @@ class RegistryTest extends TestCase
     {
         $registry = $this->createRegistry();
         $this->buildResponse([['id' => '1'], ['id' => '2']]);
-        $list = new ListProjectOpportunitiesInput('1' , 1);
+        $list = new ListProjectOpportunitiesInput('1', 1);
 
         $response = $registry->listProjectOpportunities($list);
         $this->assertIsArray($response);
@@ -99,7 +99,7 @@ class RegistryTest extends TestCase
     public function testListProjectOpportunitiesException(): void
     {
         $registry = $this->createRegistry();
-        $list = new ListProjectOpportunitiesInput('1' , 1);
+        $list = new ListProjectOpportunitiesInput('1', 1);
         $this->buildResponse([], 500, 'post', '/list-project-opportunities');
         try {
             $registry->listProjectOpportunities($list);
@@ -108,7 +108,8 @@ class RegistryTest extends TestCase
         }
     }
 
-    public function testDownloadCollection(): void {
+    public function testDownloadCollection(): void
+    {
         $registry = $this->createRegistry();
         $this->buildResponse([['id' => '1'], ['id' => '2']]);
         $collection = new DownloadCollectionInput('account_id', 1);
@@ -128,7 +129,8 @@ class RegistryTest extends TestCase
         }
     }
 
-    public function testGetAttributeQuestions(): void {
+    public function testGetAttributeQuestions(): void
+    {
         $registry = $this->createRegistry();
         $this->buildResponse([['id' => '1'], ['id' => '2']]);
         $collection = new GetAttributeQuestionsInput('US');
@@ -148,7 +150,8 @@ class RegistryTest extends TestCase
         }
     }
 
-    public function testGetAttributeAnswers(): void {
+    public function testGetAttributeAnswers(): void
+    {
         $registry = $this->createRegistry();
         $this->buildResponse([['id' => '1'], ['id' => '2']]);
         $collection = new GetAttributeAnswersInput('US');
