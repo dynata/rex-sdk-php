@@ -135,14 +135,3 @@ $registry->listProjectOpportunities($list_project_opportunities_payload);
 $download_collection_payload = new DownloadCollectionInput("account_id", 1);
 $registry->downloadCollection($list_project_opportunities_payload);
 ```
-
-##### Get Attribute Questions
-```
-$get_attribute_question_payload = new GetAttributeQuestionsInput("US");
-$registry->getAttributeQuestions($get_attribute_question_payload);
-```
-##### Get Attribute Answers
-```
-$get_attribute_answer_payload = new GetAttributeAnswersInput("US");
-$registry->getAttributeAnswers($get_attribute_answer_payload);
-```

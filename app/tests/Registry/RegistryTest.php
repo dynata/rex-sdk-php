@@ -7,10 +7,8 @@ namespace Dynata\Rex\tests\Registry;
 use App\Tests\TestCase;
 use Dynata\Rex\Core\Security\BasicCredentialsProvider;
 use Dynata\Rex\Core\Security\StringSigner;
-use Dynata\Rex\Registry\Model\GetAttributeAnswersInput;
 use Dynata\Rex\Registry\Model\AckOpportunitiesInput;
 use Dynata\Rex\Registry\Model\DownloadCollectionInput;
-use Dynata\Rex\Registry\Model\GetAttributeQuestionsInput;
 use Dynata\Rex\Registry\Model\ListOpportunitiesInput;
 use Dynata\Rex\Registry\Model\ListProjectOpportunitiesInput;
 use Dynata\Rex\Registry\Registry;
@@ -129,48 +127,6 @@ class RegistryTest extends TestCase
         $this->buildResponse([], 500, 'post', '/download-collection');
         try {
             $registry->downloadCollection($collection);
-        } catch (Exception $e) {
-            $this->assertEquals('Error Communicating with Server', $e->getMessage());
-        }
-    }
-
-    public function testGetAttributeQuestions(): void
-    {
-        $registry = $this->createRegistry();
-        $this->buildResponse([['id' => '1'], ['id' => '2']]);
-        $collection = new GetAttributeQuestionsInput('US');
-        $response = $registry->getAttributeQuestions($collection);
-        $this->assertInstanceOf(StreamInterface::class, $response);
-    }
-
-    public function testGetAttributeQuestionsException(): void
-    {
-        $registry = $this->createRegistry();
-        $collection = new GetAttributeQuestionsInput('US');
-        $this->buildResponse([], 500, 'post', '/get-attribute-questions');
-        try {
-            $registry->getAttributeQuestions($collection);
-        } catch (Exception $e) {
-            $this->assertEquals('Error Communicating with Server', $e->getMessage());
-        }
-    }
-
-    public function testGetAttributeAnswers(): void
-    {
-        $registry = $this->createRegistry();
-        $this->buildResponse([['id' => '1'], ['id' => '2']]);
-        $collection = new GetAttributeAnswersInput('US');
-        $response = $registry->getAttributeAnswers($collection);
-        $this->assertInstanceOf(StreamInterface::class, $response);
-    }
-
-    public function testGetAttributeAnswersException(): void
-    {
-        $registry = $this->createRegistry();
-        $collection = new GetAttributeAnswersInput('US');
-        $this->buildResponse([], 500, 'post', '/get-attribute-answers');
-        try {
-            $registry->getAttributeAnswers($collection);
         } catch (Exception $e) {
             $this->assertEquals('Error Communicating with Server', $e->getMessage());
         }

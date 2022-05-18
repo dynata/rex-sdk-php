@@ -7,8 +7,6 @@ namespace Dynata\Rex\Registry;
 use Dynata\Rex\Core\RexBaseService;
 use Dynata\Rex\Registry\Model\AckOpportunitiesInput;
 use Dynata\Rex\Registry\Model\DownloadCollectionInput;
-use Dynata\Rex\Registry\Model\GetAttributeAnswersInput;
-use Dynata\Rex\Registry\Model\GetAttributeQuestionsInput;
 use Dynata\Rex\Registry\Model\ListOpportunitiesInput;
 use Dynata\Rex\Registry\Model\ListProjectOpportunitiesInput;
 use Dynata\Rex\Registry\Model\Opportunity;
@@ -161,58 +159,6 @@ class Registry extends RexBaseService
 
         try {
             $response = $this->client->request('POST', '/download-collection', $options);
-            return $response->getBody();
-        } catch (BadResponseException $e) {
-            $ex = new RexServiceException($e->getMessage(), 0, $e);
-            $ex->statusCode = $e->getResponse()->getStatusCode();
-            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
-
-            throw $ex;
-        }
-    }
-
-    /**
-     * @param  GetAttributeQuestionsInput $input
-     * @param  array<string, mixed>       $options
-     * @return StreamInterface
-     * @throws GuzzleException
-     * @throws RexServiceException
-     */
-    public function getAttributeQuestions(GetAttributeQuestionsInput $input, array $options = []): StreamInterface
-    {
-        $options = \array_merge(
-            $options,
-            ['body' => $this->serializer->serialize($input, 'json'),]
-        );
-
-        try {
-            $response = $this->client->request('POST', '/get-attribute-questions', $options);
-            return $response->getBody();
-        } catch (BadResponseException $e) {
-            $ex = new RexServiceException($e->getMessage(), 0, $e);
-            $ex->statusCode = $e->getResponse()->getStatusCode();
-            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
-
-            throw $ex;
-        }
-    }
-
-    /**
-     * @param  GetAttributeAnswersInput $input
-     * @param  array<string, mixed>     $options
-     * @return StreamInterface
-     * @throws GuzzleException
-     * @throws RexServiceException
-     */
-    public function getAttributeAnswers(GetAttributeAnswersInput $input, array $options = []): StreamInterface
-    {
-        $options = \array_merge(
-            $options,
-            ['body' => $this->serializer->serialize($input, 'json'),]
-        );
-
-        try {
-            $response = $this->client->request('POST', '/get-attribute-answers', $options);
             return $response->getBody();
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
