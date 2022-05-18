@@ -3,12 +3,8 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Dynata\\Rex\\": "app/",
-            "Dynata\\Rex\\Gateway\\": "app/Gateway"
-        },
-        "classmap": [
-            "app/"
-        ]
+            "Dynata\\Rex\\": "app/"
+        }
     },
     "require": {
         "php": "^7.4",
