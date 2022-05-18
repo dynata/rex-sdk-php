@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Dynata\Rex\tests\Registry;
+
 use App\Tests\TestCase;
 use Dynata\Rex\Core\Security\BasicCredentialsProvider;
 use Dynata\Rex\Core\Security\StringSigner;
@@ -10,6 +14,7 @@ use Dynata\Rex\Registry\Model\GetAttributeQuestionsInput;
 use Dynata\Rex\Registry\Model\ListOpportunitiesInput;
 use Dynata\Rex\Registry\Model\ListProjectOpportunitiesInput;
 use Dynata\Rex\Registry\Registry;
+use Exception;
 use Psr\Http\Message\StreamInterface;
 
 class RegistryTest extends TestCase

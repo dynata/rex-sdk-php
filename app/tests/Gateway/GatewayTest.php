@@ -1,5 +1,8 @@
 <?php
+
 declare(strict_types=1);
+
+namespace Dynata\Rex\tests\Gateway;
 
 use App\Tests\TestCase;
 use Dynata\Rex\Core\Security\BasicCredentialsProvider;
@@ -14,6 +17,7 @@ use Dynata\Rex\Gateway\Model\GetAttributeInput;
 use Dynata\Rex\Gateway\Model\GetContextInput;
 use Dynata\Rex\Gateway\Model\PutRespondentAnswersInput;
 use Dynata\Rex\Gateway\Model\PutRespondentInput;
+use Exception;
 
 class GatewayTest extends TestCase
 {
