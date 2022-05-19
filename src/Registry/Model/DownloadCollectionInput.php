@@ -8,7 +8,17 @@ class DownloadCollectionInput
 {
     public ?string $account;
     /**
-    * @var int
-    */
+     * @var int
+     */
     public int $collectionId;
+
+    /**
+     * @param string|null $account
+     * @param int         $collectionId
+     */
+    public function __construct(?string $account, int $collectionId)
+    {
+        $this->account = $account;
+        $this->collectionId = $collectionId;
+    }
 }

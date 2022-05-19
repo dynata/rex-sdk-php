@@ -10,6 +10,7 @@ class Cell
     const KIND_LIST = 'LIST';
     const KIND_VALUE = 'VALUE';
     const KIND_COLLECTION = 'COLLECTION';
+    const KIND_INEFFABLE = 'INEFFABLE';
 
     public string $tag;
     public int $attributeId;

@@ -10,4 +10,5 @@ class ListCell extends Cell
      * @var string[]
      */
     public array $list;
+    public string $operator;
 }

@@ -8,7 +8,17 @@ class ListProjectOpportunitiesInput
 {
     public ?string $account;
     /**
-    * @var int
-    */
+     * @var int
+     */
     public int $projectId;
+
+    /**
+     * @param string|null $account
+     * @param int         $projectId
+     */
+    public function __construct(?string $account, int $projectId)
+    {
+        $this->account = $account;
+        $this->projectId = $projectId;
+    }
 }

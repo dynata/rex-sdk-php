@@ -13,13 +13,14 @@ class RequestContext
     public ?int $connectionRequestTimeout;
     public ?Ttl $ttl;
 
-  /**
-   * RequestContext constructor.
-   * @param int|null $socketTimeout
-   * @param int|null $connectTimeout
-   * @param int|null $connectionRequestTimeout
-   * @param Ttl|null $ttl
-   */
+    /**
+     * RequestContext constructor.
+     *
+     * @param int|null $socketTimeout
+     * @param int|null $connectTimeout
+     * @param int|null $connectionRequestTimeout
+     * @param Ttl|null $ttl
+     */
     public function __construct(?int $socketTimeout, ?int $connectTimeout, ?int $connectionRequestTimeout, ?Ttl $ttl)
     {
         $this->socketTimeout = $socketTimeout;
