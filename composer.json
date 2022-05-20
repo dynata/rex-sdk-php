@@ -1,6 +1,7 @@
 {
     "name": "dynata/rex-sdk-php",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Dynata\\Rex\\": "src/"
