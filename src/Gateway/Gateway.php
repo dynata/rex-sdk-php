@@ -15,6 +15,7 @@ use Dynata\Rex\Gateway\Model\ExpireContextInput;
 use Dynata\Rex\Gateway\Model\GetAttributeInfoInput;
 use Dynata\Rex\Gateway\Model\GetAttributeInput;
 use Dynata\Rex\Gateway\Model\GetContextInput;
+use Dynata\Rex\Gateway\Model\ListAttributesInput;
 use Dynata\Rex\Gateway\Model\PutRespondentAnswersInput;
 use Dynata\Rex\Gateway\Model\PutRespondentInput;
 use Dynata\Rex\Gateway\Model\RequestContext;
@@ -162,6 +163,12 @@ class Gateway extends RexBaseService
         }
     }
 
+    /**
+     * @deprecated please use listAttributes()
+     * @param GetAttributeInput $input
+     * @return Attribute[]|mixed
+     * @throws GuzzleException
+     */
     public function getAttributes(GetAttributeInput $input)
     {
         $options = [
@@ -186,6 +193,40 @@ class Gateway extends RexBaseService
         }
     }
 
+    /**
+     * @param ListAttributesInput $input
+     * @return Attribute[]|mixed
+     * @throws GuzzleException
+     */
+    public function listAttributes(ListAttributesInput $input)
+    {
+        $options = [
+            'body' => $this->serializer->serialize($input, 'json'),
+        ];
+        try {
+            $response = $this->client->request('POST', '/list-attributes', $options);
+            /*** @var Attribute[] $attributes */
+            /*** @noinspection PhpUnnecessaryLocalVariableInspection */
+            $attributes = $this->serializer->deserialize(
+                $response->getBody()->getContents(),
+                'Dynata\Rex\Gateway\Model\Attribute[]',
+                'json'
+            );
+            return $attributes;
+        } catch (BadResponseException $e) {
+            $ex = new RexServiceException($e->getMessage(), 0, $e);
+            $ex->statusCode = $e->getResponse()->getStatusCode();
+            $ex->rawResponse = $e->getResponse()->getBody()->getContents();
+
+            throw $ex;
+        }
+    }
+
+    /**
+     * @param GetAttributeInfoInput $input
+     * @return AttributeInfo|mixed
+     * @throws GuzzleException
+     */
     public function getAttributeInfo(GetAttributeInfoInput $input)
     {
         $options = [

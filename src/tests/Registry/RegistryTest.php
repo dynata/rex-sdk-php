@@ -7,9 +7,11 @@ namespace Dynata\Rex\tests\Registry;
 use App\Tests\TestCase;
 use Dynata\Rex\Core\Security\BasicCredentialsProvider;
 use Dynata\Rex\Core\Security\StringSigner;
+use Dynata\Rex\Registry\Model\AckNotificationsInput;
 use Dynata\Rex\Registry\Model\AckOpportunitiesInput;
 use Dynata\Rex\Registry\Model\DownloadCollectionInput;
 use Dynata\Rex\Registry\Model\ListOpportunitiesInput;
+use Dynata\Rex\Registry\Model\ReceiveNotificationsInput;
 use Dynata\Rex\Registry\Model\ListProjectOpportunitiesInput;
 use Dynata\Rex\Registry\Registry;
 use Exception;
@@ -48,6 +50,28 @@ class RegistryTest extends TestCase
         }
     }
 
+    public function testReceiveNotifications(): void
+    {
+        $registry = $this->createRegistry();
+        $this->buildResponse([['id' => '1'], ['id' => '2']]);
+        $list = new ReceiveNotificationsInput(1);
+        $response = $registry->receiveNotifications($list);
+        $this->assertIsArray($response);
+        $this->assertInstanceOf('Dynata\Rex\Registry\Model\Notification', $response[0]);
+    }
+
+    public function testReceiveNotificationsException(): void
+    {
+        $registry = $this->createRegistry();
+        $this->buildResponse([], 500, 'post', '/receive-notifications');
+        $list = new ReceiveNotificationsInput(1);
+        try {
+            $registry->receiveNotifications($list);
+        } catch (Exception $e) {
+            $this->assertEquals('Error Communicating with Server', $e->getMessage());
+        }
+    }
+
     public function testAckOpportunities(): void
     {
         $registry = $this->createRegistry();
@@ -64,6 +88,27 @@ class RegistryTest extends TestCase
         $list = new AckOpportunitiesInput('1', [1, 2, 3]);
         try {
             $registry->ackOpportunities($list);
+        } catch (Exception $e) {
+            $this->assertEquals('Error Communicating with Server', $e->getMessage());
+        }
+    }
+
+    public function testAckNotifications(): void
+    {
+        $registry = $this->createRegistry();
+        $this->buildResponse();
+        $list = new AckNotificationsInput([1, 2, 3]);
+        $response = $registry->ackNotifications($list);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function testAckNotificationsException(): void
+    {
+        $registry = $this->createRegistry();
+        $this->buildResponse([], 500, 'post', '/ack-notifications');
+        $list = new AckNotificationsInput([1, 2, 3]);
+        try {
+            $registry->ackNotifications($list);
         } catch (Exception $e) {
             $this->assertEquals('Error Communicating with Server', $e->getMessage());
         }

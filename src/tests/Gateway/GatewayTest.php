@@ -15,6 +15,7 @@ use Dynata\Rex\Gateway\Model\ExpireContextInput;
 use Dynata\Rex\Gateway\Model\GetAttributeInfoInput;
 use Dynata\Rex\Gateway\Model\GetAttributeInput;
 use Dynata\Rex\Gateway\Model\GetContextInput;
+use Dynata\Rex\Gateway\Model\ListAttributesInput;
 use Dynata\Rex\Gateway\Model\PutRespondentAnswersInput;
 use Dynata\Rex\Gateway\Model\PutRespondentInput;
 use Exception;
@@ -181,6 +182,28 @@ class GatewayTest extends TestCase
         $attributeInput = new GetAttributeInput();
         try {
             $gateway->getAttributes($attributeInput);
+        } catch (Exception $e) {
+            $this->assertEquals('Error Communicating with Server', $e->getMessage());
+        }
+    }
+
+    public function testListAttributes(): void
+    {
+        $gateway = $this->createGateway();
+        $this->buildResponse([['active' => true, 'attribute_id' => 4], ['active' => true, 'attribute_id' => 5]]);
+        $attributeInput = new ListAttributesInput();
+        $attributes = $gateway->listAttributes($attributeInput);
+        $this->assertIsArray($attributes);
+        $this->assertInstanceOf('Dynata\Rex\Gateway\Model\Attribute', $attributes[0]);
+    }
+
+    public function testListAttributesException(): void
+    {
+        $gateway = $this->createGateway();
+        $this->buildResponse([], 500, 'post', '/list-attributes');
+        $attributeInput = new ListAttributesInput();
+        try {
+            $gateway->listAttributes($attributeInput);
         } catch (Exception $e) {
             $this->assertEquals('Error Communicating with Server', $e->getMessage());
         }
