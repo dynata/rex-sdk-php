@@ -19,27 +19,20 @@ $string_signer = new StringSigner($creds_provider, $interval);
 $registy = new Registry("REX_REGISTRY_BASE_URL", $string_signer);
 ```
 
-##### List Opportunities
+##### List Opportunity Notifications
 
 ```php
 $shardConfig = new ShardConfig(1, 1);
-$opportunity_payload = new ListOpportunitiesInput(1, $shardConfig, "account_id");
-$registry->listOpportunities($opportunity_payload);
+$notification_payload = new ReceiveNotificationsInput(1, $shardConfig, "account_id");
+$registry->recieveNotifications($notification_payload);
 ```
 
-##### List Opportunities
+
+##### Acknowledge Notifications
 
 ```php
-$shardConfig = new ShardConfig(1, 1);
-$opportunity_payload = new ListOpportunitiesInput(1, $shardConfig, "account_id");
-$registry->listOpportunities($opportunity_payload);
-```
-
-##### Acknowledge Opportunities
-
-```php
-$ack_opportunity_payload = new AckOpportunitiesInput("account_id", [1, 2 , 3]);
-$registry->ackOpportunities($ack_opportunity_payload);
+$ack_notification_payload = new AckNotificationsInput("account_id", [1, 2 , 3]);
+$registry->ackNotifications($ack_notification_payload);
 ```
 
 ##### Get Opportunity
@@ -138,12 +131,12 @@ $respondent = new PutRespondentAnwsersInput(
 $gatway->putRespondentAnswers($respondent);
 ```
 
-##### Get Attributes
+##### List Attributes
 
 ```php
-$get_attributes = new GetAttributeInput();
-$get_attributes->page_size = 1;
-$gateway->getAttributes($get_attributes);
+$list_attributes = new ListAttributesInput();
+$list_attributes->page_size = 1;
+$gateway->listAttributes($list_attributes);
 ```
 
 ##### Get Attribute Info
