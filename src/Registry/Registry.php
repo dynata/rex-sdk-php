@@ -81,13 +81,13 @@ class Registry extends RexBaseService
 
             /*** @var Opportunity[] $opportunities */
             /*** @noinspection PhpUnnecessaryLocalVariableInspection */
-            $opportunities = $this->serializer->deserialize(
+            $notifications = $this->serializer->deserialize(
                 $response->getBody()->getContents(),
                 'Dynata\Rex\Registry\Model\Notification[]',
                 'json'
             );
 
-            return $opportunities;
+            return $notifications;
         } catch (BadResponseException $e) {
             $ex = new RexServiceException($e->getMessage(), 0, $e);
             $ex->statusCode = $e->getResponse()->getStatusCode();
