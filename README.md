@@ -4,10 +4,11 @@ Package for building and interacting with the Dynata Respondent Exchange (REX)
 
 ## Quickstart:
 
+## Note: if you do not have an "account_id" null can be used
+
 ### _**Opportunity Registry**_
 
 ### Instantiate a Registry Client
-
 ```php
 use Dynata\Rex\Core\Security\BasicCredentialsProvider;
 use Dynata\Rex\Core\Security\StringSigner;
