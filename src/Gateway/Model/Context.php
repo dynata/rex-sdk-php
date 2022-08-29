@@ -10,5 +10,8 @@ class Context
 {
     public string $id;
     public ?array $items;
+    /**
+     * @var Ttl $expiration
+     */
     public Ttl $expiration;
 }
