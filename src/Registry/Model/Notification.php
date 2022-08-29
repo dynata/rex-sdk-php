@@ -37,6 +37,9 @@ class Notification
      * @var int[]
      */
     public array $categoryIds;
+    /**
+     * @var Locale $locale
+     */
     public Locale $locale;
     /**
      * @var string[] One or more of the DEVICE_* constants
@@ -54,6 +57,9 @@ class Notification
      * @var Quota[][]
      */
     public array $quotas;
+    /**
+     * @var Links $links
+     */
     public Links $links;
     public string $created;
     /**

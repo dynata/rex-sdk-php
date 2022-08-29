@@ -6,5 +6,8 @@ namespace Dynata\Rex\Registry\Model;
 
 class RangeCell extends Cell
 {
+    /**
+     * @var Range $range
+     */
     public Range $range;
 }
