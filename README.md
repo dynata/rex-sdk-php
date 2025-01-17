@@ -1,3 +1,7 @@
+> [!warning]
+> ## DEPRECATED
+> This repository is no longer supported.
+
 # rex-sdk-php
 
 Package for building and interacting with the Dynata Respondent Exchange (REX)
